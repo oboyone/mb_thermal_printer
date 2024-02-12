@@ -11,6 +11,12 @@ A step by step on how this was done is
 - Add python script, and image files to Raspberry Pi
 - Add python script to crontab startup so that it is automatically started when the Pi is powered on
 
+Description of files:
+Get_Image_URLs.py - Get URLs for the actual cards from Scryfall, uses the MTGJSON file
+Download_Images.py - Downloads the actual images into folders from Scryfalls database
+convert_images_to_monochrome.sh - Converts the JPG files into monochrome BMP files, this needs to be run on a Linux installation with imagemagick
+momir_basic.py - Actual python program that runs on the Pi for the printer
+
 I used the following hardware <br />
 3x KY-004 Push Button  <br />
 1x 3 x 0.91" OLED 128 x 32 pixels I2C Screen <br />
@@ -21,7 +27,7 @@ I used the following hardware <br />
 1x Power cable for Raspberry PI <br />
 1x Soldering Breadboard <br />
 1x 32gb micro SD card <br />
-Dupont Cables <br />
+Dupont Cables <br 
 
 I started the project with the aim of using a Arduino UNO instead of the Raspberry PI, but after many hours of troubleshooting and retrying things I realized that my thermal printer simply was incompatible with most common thermal printer modules for the Arduino. <br /> <br /> I could never get it to print images no matter what I tried. So I ended up pivoting to the Rapsberry Pi instead. I am sure that you can get this to work on a Arduino with a compatible thermal printer, if so you probably want to use imagemagick to convert the monochrome images to BIN files instead, the code for that would look something like this
 
