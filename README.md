@@ -12,10 +12,10 @@ A step by step on how this was done is
 - Add python script to crontab startup so that it is automatically started when the Pi is powered on
 
 Description of files:
-Get_Image_URLs.py - Get URLs for the actual cards from Scryfall, uses the MTGJSON file
-Download_Images.py - Downloads the actual images into folders from Scryfalls database
-convert_images_to_monochrome.sh - Converts the JPG files into monochrome BMP files, this needs to be run on a Linux installation with imagemagick
-momir_basic.py - Actual python program that runs on the Pi for the printer
+Get_Image_URLs.py - Get URLs for the actual cards from Scryfall, uses the MTGJSON file <br />
+Download_Images.py - Downloads the actual images into folders from Scryfalls database <br />
+convert_images_to_monochrome.sh - Converts the JPG files into monochrome BMP files, this needs to be run on a Linux installation with imagemagick <br />
+momir_basic.py - Actual python program that runs on the Pi for the printer <br />
 
 I used the following hardware <br />
 3x KY-004 Push Button  <br />
