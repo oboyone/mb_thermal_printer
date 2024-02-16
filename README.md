@@ -19,6 +19,7 @@ Description of files: <br />
 
 I used the following hardware <br />
 3x KY-004 Push Button  <br />
+3x 1k OHM Resistors (optional, but will extend the lifetime of your GPIO buttons probably) <br />
 1x 3 x 0.91" OLED 128 x 32 pixels I2C Screen <br />
 1x Raspberry Pi 4 <br />
 1x QR204 Thermal Printer <br />
