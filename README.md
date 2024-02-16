@@ -12,8 +12,8 @@ A step by step on how this was done is
 - Add python script to crontab startup so that it is automatically started when the Pi is powered on
 
 Description of files: <br />
-**get_.py** - Downloads the actual images into folders from Scryfalls database <br />
-**get_image_urls_from_scryfall.py** - Get URLs for the actual image files from Scryfall, uses the Scryfall API and our created JSON <br />
+**get_image_urls_from_scryfall.py** - Get URLs for the actual image files from Scryfall, uses the Scryfall API and creates a new JSON file for us <br />
+**download_images_from_scryfall.py** - Downloads the actual images into folders from Scryfalls database <br />
 **convert_images_to_monochrome.sh** - Converts the JPG files into monochrome BMP files, this needs to be run on a Linux installation with imagemagick <br />
 **momir_basic.py** - Actual python program that runs on the Pi for the printer <br />
 
