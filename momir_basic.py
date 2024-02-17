@@ -11,7 +11,8 @@ from PIL import ImageFont
 from PIL import ImageDraw
 import time
 
-BUTTON_1_PIN = 11 #Button pins 
+#Button pins
+BUTTON_1_PIN = 11  
 BUTTON_2_PIN = 13
 BUTTON_3_PIN = 15
 
@@ -19,26 +20,35 @@ cmc = 0 #cmc variable for tracking cmc
 
 p = Serial(devfile='/dev/serial0', baudrate=9600, bytesize=8, parity='N', stopbits=1, timeout=1.00, dsrdtr=True) #initilize thermal printer serial 
 
-serial = i2c(port=1, address=0x3C) #initilize OLED screen serial ports
+#initilize OLED screen serial ports, set communication and set font/size
+serial = i2c(port=1, address=0x3C) 
+device = ssd1306(serial)
+font16 = ImageFont.truetype(FredokaOne, 16) 
 
-device = ssd1306(serial) #initilize OLED screen serial communication
-
-font16 = ImageFont.truetype(FredokaOne, 16) #set font and size for screen
-
-def display_cmc(cmc): #function to display cmc on screen
+def display_cmc(cmc):
+    """
+    Function to display cmc on screen
+    """
     with canvas(device) as draw:
         draw.text((5, 30), "Current CMC: " + str(cmc), fill="white", font=font16)
+        
+#display initial cmc = 0
+display_cmc(cmc) 
 
-display_cmc(cmc) #display initial cmc = 0
-
-def display_print_message(cmc): #function to display print message
+def display_print_message(cmc):
+    """
+    Function to display print message
+    """
     with canvas(device) as draw:
         draw.text((5, 0), "Printing", fill="white", font=font16)
         draw.text((5, 30), "Current CMC: " + str(cmc), fill="white", font=font16)
 
-GPIO.setwarnings(False) #ignore button warnings
-GPIO.setmode(GPIO.BOARD)  # Set pin numbering mode to BOARD
-GPIO.setup(BUTTON_1_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) #set GPIO settings for buttons
+#ignore button warnings and set numbering mode to BOARD
+GPIO.setwarnings(False) 
+GPIO.setmode(GPIO.BOARD)
+
+#set GPIO settings for buttons
+GPIO.setup(BUTTON_1_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) 
 GPIO.setup(BUTTON_2_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(BUTTON_3_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
