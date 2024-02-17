@@ -44,11 +44,14 @@ GPIO.setup(BUTTON_3_PIN, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 def print_random_image(cmc): #function to print image
     path = '/home/pi/momir_basic/' + str(cmc) + '/'
-    image_path = path + random.choice(os.listdir(path))
-    p.image(image_path)
-    p.textln("")
-    p.textln("")
-    p.textln("")
+    try:
+        image_path = path + random.choice(os.listdir(path))
+        p.image(image_path)
+        p.textln("")
+        p.textln("")
+        p.textln("")
+    except Exception as e:
+        print("An error occurred:", e)
 
 #print_random_image(0)
 
@@ -70,9 +73,6 @@ while True: # Run forever
         else:
             pass
     if GPIO.input(BUTTON_3_PIN) == GPIO.LOW: #printing button
-        if cmc == 14: #there are currently no CMC 14 creatures, so skip if you try printing this
-            pass
-        else:
-            display_print_message(cmc)
-            print_random_image(cmc)
-            time.sleep(debounce_delay)  # Debounce delay
+        display_print_message(cmc)
+        print_random_image(cmc)
+        time.sleep(debounce_delay)  # Debounce delay
