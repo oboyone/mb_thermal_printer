@@ -25,11 +25,11 @@ counter = 0 #scryfall supports 70 items in each payload
 loop_counter = 0 #keep track of how many api calls we send, mostly used to see that the script is working
 payload = {'identifiers':[]} #identifier payload for scryfall api calll
 image_urls = []
-for key, value in creatures.items():
+for index, (key, value) in enumerate(creatures.items()):
 #    print(value[0]["identifiers"]["scryfallOracleId"])
     counter = counter + 1
     payload["identifiers"].append({'oracle_id':value[0]["identifiers"]["scryfallOracleId"]})
-    if counter > 70:
+    if counter > 70 or index == len(creatures) - 1:
 #        print(payload)
         time.sleep(300/1000) #scryfall has an API limit, this prevents us from hitting that 
         response = requests.post('https://api.scryfall.com/cards/collection', json=payload)
