@@ -22,13 +22,15 @@ with open('AtomicCards.json', 'r', encoding='utf-8') as file:
             continue
 
 counter = 0 #scryfall supports 70 items in each payload
-loop_counter = 0 #keep track of how many api calls we send, mostly used to see that the script is working
+payload_counter = 0 #keep track of how many api calls we send, mostly used to see that the script is working
 payload = {'identifiers':[]} #identifier payload for scryfall api calll
+creature_count = len(creatures)
+estimated_payloads = int(creature_count/70) + (creature_count % 70 > 0)
 image_urls = []
 for index, (key, value) in enumerate(creatures.items()):
     counter += 1
     payload["identifiers"].append({'oracle_id':value[0]["identifiers"]["scryfallOracleId"]})
-    if counter > 70 or index == len(creatures) - 1:
+    if counter > 70 or index == creature_count - 1:
         time.sleep(0.3) 
         response = requests.post('https://api.scryfall.com/cards/collection', json=payload)
         counter = 0
@@ -47,8 +49,8 @@ for index, (key, value) in enumerate(creatures.items()):
         finally:
             response = {} #clear response json
             payload = {'identifiers':[]} #clear payload
-            loop_counter += 1
-            print(loop_counter) #how many loops have we executed
+            payload_counter += 1
+            print(f"Payload number {payload_counter}, out of {estimated_payloads}") #how many payloads we have sent
 
 with open('creatures_image_urls.json', 'w') as fout: #write image url's to json file
     json.dump(image_urls, fout)
