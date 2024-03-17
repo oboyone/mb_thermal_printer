@@ -3,7 +3,6 @@ import time
 import requests
 import json
 
-
 creatures = {}
 
 # Open the JSON file from MTGJSON
@@ -18,33 +17,38 @@ with open('AtomicCards.json', 'r', encoding='utf-8') as file:
                 if "Creature" in value[0]["type"]:
                     if value[0]["legalities"] and "A-" not in value[0]["name"]:
                         creatures[key] = value       
-        except:
-            pass              
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            continue
 
 counter = 0 #scryfall supports 70 items in each payload
 loop_counter = 0 #keep track of how many api calls we send, mostly used to see that the script is working
 payload = {'identifiers':[]} #identifier payload for scryfall api calll
 image_urls = []
 for index, (key, value) in enumerate(creatures.items()):
-#    print(value[0]["identifiers"]["scryfallOracleId"])
-    counter = counter + 1
+    counter += 1
     payload["identifiers"].append({'oracle_id':value[0]["identifiers"]["scryfallOracleId"]})
     if counter > 70 or index == len(creatures) - 1:
-#        print(payload)
-        time.sleep(300/1000) #scryfall has an API limit, this prevents us from hitting that 
+        time.sleep(0.3) 
         response = requests.post('https://api.scryfall.com/cards/collection', json=payload)
         counter = 0
-        response_dict = json.loads(response.text)
-        for item in response_dict["data"]: #save image urls to list 
-            try:
-                image_urls.append({"name":item["name"], "image_url":item["image_uris"]["large"], "cmc":item["cmc"]})
-#               print(image_urls)
-            except:
-                pass
-        response = {} #clear response json
-        payload = {'identifiers':[]} #clear payload
-        loop_counter = loop_counter + 1
-        print(loop_counter) #how many loops have we executed
+        try:
+            response.raise_for_status()
+            response_dict = response.json()
+            for item in response_dict["data"]: #save image urls to list 
+                try:
+                    image_urls.append({"name":item["name"], "image_url":item["image_uris"]["large"], "cmc":item["cmc"]})
+                except Exception as e:
+                    print(f"An error occurred while processing response data: {e}")
+                    continue
+        except requests.exceptions.RequestException as e:
+            print(f"An error occurred while making the request: {e}")
+            continue
+        finally:
+            response = {} #clear response json
+            payload = {'identifiers':[]} #clear payload
+            loop_counter += 1
+            print(loop_counter) #how many loops have we executed
 
 with open('creatures_image_urls.json', 'w') as fout: #write image url's to json file
     json.dump(image_urls, fout)
